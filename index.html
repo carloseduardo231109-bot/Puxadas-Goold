@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PUXADAS GOLD • Studio</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #06070a;
+      color: #eef0f4;
+      padding: 16px;
+    }
+
+    .wrap {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .login-box {
+      max-width: 390px;
+      margin: 60px auto;
+      background: #0e1117;
+      border: 1px solid #2b2310;
+      border-top: 3px solid #e5a92b;
+      border-radius: 10px;
+      padding: 24px;
+    }
+
+    .brand-tag {
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: #e5a92b;
+      font-weight: bold;
+    }
+
+    .login-box h1 {
+      margin: 6px 0 4px 0;
+      font-size: 22px;
+      color: #fff;
+    }
+
+    .sub {
+      margin: 0 0 18px 0;
+      font-size: 13px;
+      color: #8b93a5;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      color: #c7cdd8;
+      margin-bottom: 6px;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    textarea {
+      width: 100%;
+      background: #07090d;
+      border: 1px solid #232936;
+      color: #fff;
+      border-radius: 7px;
+      padding: 11px 12px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: #e5a92b;
+    }
+
+    .field {
+      margin-bottom: 14px;
+    }
+
+    .btn-gold {
+      width: 100%;
+      background: #e5a92b;
+      color: #07080b;
+      border: none;
+      border-radius: 7px;
+      padding: 12px 14px;
+      font-weight: bold;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .btn-gold:hover {
+      background: #f3ba3d;
+    }
+
+    .btn-gold:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .btn-dark {
+      background: #141821;
+      color: #e2e6ef;
+      border: 1px solid #282f3d;
+      border-radius: 7px;
+      padding: 10px 12px;
+      font-weight: bold;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .btn-dark:hover {
+      border-color: #e5a92b;
+      color: #f3ba3d;
+    }
+
+    .erro-login {
+      margin-top: 10px;
+      font-size: 12.5px;
+      color: #ff6b6b;
+      min-height: 16px;
+    }
+
+    #app {
+      display: none;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #0e1117;
+      border: 1px solid #222733;
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 12px;
+    }
+
+    .topbar-left h2 {
+      margin: 2px 0 0 0;
+      font-size: 19px;
+      color: #f3ba3d;
+    }
+
+    .link-box {
+      display: flex;
+      gap: 8px;
+      background: #0e1117;
+      border: 1px solid #222733;
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-bottom: 12px;
+      align-items: center;
+    }
+
+    .link-box input {
+      flex: 1;
+      padding: 8px 10px;
+      font-size: 12.5px;
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .tab-btn {
+      background: #0e1117;
+      color: #9aa2b2;
+      border: 1px solid #202530;
+      border-radius: 8px;
+      padding: 10px 6px;
+      font-weight: bold;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .tab-btn.ativa {
+      background: #1b160b;
+      color: #f3ba3d;
+      border-color: #e5a92b;
+    }
+
+    .panel {
+      display: none;
+      background: #0e1117;
+      border: 1px solid #222733;
+      border-radius: 10px;
+      padding: 16px;
+    }
+
+    .panel.ativa {
+      display: block;
+    }
+
+    .cmds {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(84px, 1fr));
+      gap: 7px;
+      margin-bottom: 12px;
+    }
+
+    .cmd {
+      background: #141821;
+      color: #f3ba3d;
+      border: 1px solid #2a2f3d;
+      border-radius: 7px;
+      padding: 8px 6px;
+      font-weight: bold;
+      font-size: 12.5px;
+      cursor: pointer;
+    }
+
+    .cmd.sel {
+      background: #e5a92b;
+      color: #07080b;
+      border-color: #e5a92b;
+    }
+
+    .row {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .row .btn-gold {
+      flex: 1;
+      min-width: 150px;
+    }
+
+    .status-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 14px;
+      margin-bottom: 6px;
+      font-size: 12px;
+      color: #8b93a5;
+    }
+
+    #status {
+      color: #f3ba3d;
+      font-weight: bold;
+    }
+
+    pre.out {
+      margin: 0;
+      background: #06080b;
+      border: 1px solid #1e232e;
+      border-radius: 8px;
+      padding: 14px;
+      min-height: 170px;
+      max-height: 430px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-family: Consolas, monospace;
+      font-size: 13px;
+      line-height: 1.45;
+      color: #f1f3f7;
+    }
+
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .hist-item {
+      background: #090b0f;
+      border: 1px solid #1f2430;
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+    }
+
+    .hist-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+      font-size: 12px;
+      color: #e5a92b;
+      font-weight: bold;
+    }
+
+    .hist-preview {
+      font-family: Consolas, monospace;
+      font-size: 12px;
+      color: #c8ceda;
+      white-space: pre-wrap;
+      max-height: 90px;
+      overflow: hidden;
+    }
+
+    .vazio {
+      color: #7c8494;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section id="loginView" class="login-box">
+      <div class="brand-tag">PUXADAS GOLD</div>
+      <h1>Acesso ao Painel</h1>
+      <p class="sub">Entre com sua conta para liberar as ferramentas.</p>
+
+      <div class="field">
+        <label for="userInput">Usuário</label>
+        <input id="userInput" type="text" placeholder="Digite o usuário" autocomplete="off" />
+      </div>
+
+      <div class="field">
+        <label for="passInput">Senha</label>
+        <input id="passInput" type="password" placeholder="Digite a senha" />
+      </div>
+
+      <button class="btn-gold" type="button" onclick="fazerLogin()">ENTRAR</button>
+      <div id="erroLogin" class="erro-login"></div>
+    </section>
+
+    <section id="app">
+      <header class="topbar">
+        <div class="topbar-left">
+          <div class="brand-tag">PUXADAS GOLD</div>
+          <h2>Workspace</h2>
+        </div>
+        <button class="btn-dark" type="button" onclick="sair()">Sair</button>
+      </header>
+
+      <div class="link-box">
+        <input
+          id="tunnelInput"
+          type="text"
+          placeholder="Link https://xxxx.trycloudflare.com"
+          autocomplete="off"
+        />
+        <button class="btn-dark" type="button" onclick="salvarTunnel()">Salvar Link</button>
+      </div>
+
+      <nav class="tabs">
+        <button class="tab-btn ativa" type="button" data-tab="gerador">Gerador</button>
+        <button class="tab-btn" type="button" data-tab="ferramentas">Ferramentas</button>
+        <button class="tab-btn" type="button" data-tab="bloco">Bloco</button>
+        <button class="tab-btn" type="button" data-tab="historico">Histórico</button>
+      </nav>
+
+      <div id="tab-gerador" class="panel ativa">
+        <div class="cmds" id="cmdsBox">
+          <button class="cmd" type="button" data-cmd="/cpf1">/cpf1</button>
+          <button class="cmd" type="button" data-cmd="/cpf2">/cpf2</button>
+          <button class="cmd" type="button" data-cmd="/cpf3">/cpf3</button>
+          <button class="cmd" type="button" data-cmd="/nome">/nome</button>
+          <button class="cmd" type="button" data-cmd="/telefone">/telefone</button>
+          <button class="cmd" type="button" data-cmd="/cnpj">/cnpj</button>
+          <button class="cmd" type="button" data-cmd="/email">/email</button>
+        </div>
+
+        <input
+          id="entradaCmd"
+          type="text"
+          placeholder="Ex: /cpf2 06411305463 ou /nome Fulano"
+          autocomplete="off"
+        />
+
+        <div class="row">
+          <button id="btnExec" class="btn-gold" type="button" onclick="executar()">EXECUTAR</button>
+          <button class="btn-dark" type="button" onclick="gerarSenha()">Gerar Senha</button>
+          <button class="btn-dark" type="button" onclick="gerarFicha()">Criar Ficha</button>
+          <button class="btn-dark" type="button" onclick="copiarSaida()">Copiar</button>
+          <button class="btn-dark" type="button" onclick="limparSaida()">Limpar</button>
+        </div>
+
+        <div class="status-row">
+          <span>Saída</span>
+          <span id="status">Pronto</span>
+        </div>
+        <pre id="saida" class="out">Aguardando entrada...</pre>
+      </div>
+
+      <div id="tab-ferramentas" class="panel">
+        <label for="textoTool">Texto / Conteúdo</label>
+        <textarea id="textoTool" rows="5" placeholder="Cole um texto, lista ou bloco aqui..."></textarea>
+
+        <div class="tool-grid">
+          <button class="btn-dark" type="button" onclick="soNumeros()">Só Números</button>
+          <button class="btn-dark" type="button" onclick="limparEspacos()">Limpar Linhas Vazias</button>
+          <button class="btn-dark" type="button" onclick="maiusculo()">MAIUSCULO</button>
+          <button class="btn-dark" type="button" onclick="minusculo()">minusculo</button>
+          <button class="btn-dark" type="button" onclick="contarChars()">Contar Caracteres</button>
+          <button class="btn-dark" type="button" onclick="copiarTool()">Copiar Texto</button>
+        </div>
+
+        <div class="status-row">
+          <span>Resultado da ferramenta</span>
+          <span id="toolInfo">Pronto</span>
+        </div>
+        <pre id="saidaTool" class="out">Sem processamento ainda.</pre>
+      </div>
+
+      <div id="tab-bloco" class="panel">
+        <label for="blocoNotas">Bloco rápido (salvo no navegador)</label>
+        <textarea id="blocoNotas" rows="9" placeholder="Escreva suas anotações, códigos ou rascunhos aqui..."></textarea>
+        <div class="row">
+          <button class="btn-gold" type="button" onclick="salvarBloco()">Salvar Bloco</button>
+          <button class="btn-dark" type="button" onclick="copiarBloco()">Copiar Bloco</button>
+          <button class="btn-dark" type="button" onclick="limparBloco()">Apagar</button>
+        </div>
+      </div>
+
+      <div id="tab-historico" class="panel">
+        <div class="row" style="margin-top:0; margin-bottom:12px;">
+          <button class="btn-dark" type="button" onclick="limparHistorico()">Limpar Histórico</button>
+        </div>
+        <div id="listaHistorico"></div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const API_BASE_PADRAO = "https://COLE_AQUI_SEU_LINK_TRYCLOUDFLARE.com";
+    const USER_CORRETO = "gold";
+    const PASS_CORRETA = "1234";
+    const AUTH_KEY = "pg_auth_ok";
+    const NOTE_KEY = "pg_bloco_nota";
+    const TUNNEL_KEY = "pg_tunnel_url";
+
+    const loginView = document.getElementById("loginView");
+    const appView = document.getElementById("app");
+    const userInput = document.getElementById("userInput");
+    const passInput = document.getElementById("passInput");
+    const erroLogin = document.getElementById("erroLogin");
+    const tunnelInput = document.getElementById("tunnelInput");
+
+    const entradaCmd = document.getElementById("entradaCmd");
+    const saidaEl = document.getElementById("saida");
+    const statusEl = document.getElementById("status");
+    const btnExec = document.getElementById("btnExec");
+    const cmds = document.querySelectorAll(".cmd");
+
+    const historico = [];
+
+    function obterApiBase() {
+      const salvo = (localStorage.getItem(TUNNEL_KEY) || "").trim();
+      const atual = salvo || API_BASE_PADRAO;
+      return atual.replace(/\/+$/, "");
+    }
+
+    function carregarTunnel() {
+      const salvo = (localStorage.getItem(TUNNEL_KEY) || "").trim();
+      tunnelInput.value = salvo || (API_BASE_PADRAO.includes("COLE_AQUI") ? "" : API_BASE_PADRAO);
+    }
+
+    function salvarTunnel() {
+      const val = tunnelInput.value.trim().replace(/\/+$/, "");
+      if (!val) {
+        localStorage.removeItem(TUNNEL_KEY);
+        statusEl.textContent = "Link removido";
+        return;
+      }
+      localStorage.setItem(TUNNEL_KEY, val);
+      statusEl.textContent = "Link salvo";
+    }
+
+    function verificarSessao() {
+      if (sessionStorage.getItem(AUTH_KEY) === "1") {
+        loginView.style.display = "none";
+        appView.style.display = "block";
+        carregarTunnel();
+        carregarBloco();
+        renderHistorico();
+      } else {
+        loginView.style.display = "block";
+        appView.style.display = "none";
+      }
+    }
+
+    function fazerLogin() {
+      const u = userInput.value.trim();
+      const p = passInput.value;
+      if (u === USER_CORRETO && p === PASS_CORRETA) {
+        sessionStorage.setItem(AUTH_KEY, "1");
+        erroLogin.textContent = "";
+        passInput.value = "";
+        verificarSessao();
+      } else {
+        erroLogin.textContent = "Usuário ou senha inválidos.";
+      }
+    }
+
+    function sair() {
+      sessionStorage.removeItem(AUTH_KEY);
+      verificarSessao();
+    }
+
+    passInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") fazerLogin();
+    });
+
+    document.querySelectorAll(".tab-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("ativa"));
+        document.querySelectorAll(".panel").forEach((p) => p.classList.remove("ativa"));
+        btn.classList.add("ativa");
+        document.getElementById("tab-" + btn.dataset.tab).classList.add("ativa");
+        if (btn.dataset.tab === "historico") renderHistorico();
+      });
+    });
+
+    cmds.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        cmds.forEach((b) => b.classList.remove("sel"));
+        btn.classList.add("sel");
+        const cmd = btn.dataset.cmd;
+        const atual = entradaCmd.value.trim();
+        const partes = atual ? atual.split(/\s+/) : [];
+        const resto = partes.length > 1 ? " " + partes.slice(1).join(" ") : " ";
+        entradaCmd.value = cmd + resto;
+        entradaCmd.focus();
+      });
+    });
+
+    entradaCmd.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        executar();
+      }
+    });
+
+    function addHistorico(titulo, conteudo) {
+      const hora = new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+      historico.unshift({ titulo, conteudo, hora });
+      if (historico.length > 25) historico.pop();
+    }
+
+    function renderHistorico() {
+      const box = document.getElementById("listaHistorico");
+      if (!historico.length) {
+        box.innerHTML = '<div class="vazio">Nenhum registro ainda.</div>';
+        return;
+      }
+      box.innerHTML = historico.map((item, i) => `
+        <div class="hist-item">
+          <div class="hist-top">
+            <span>${item.titulo} • ${item.hora}</span>
+            <button class="btn-dark" type="button" onclick="copiarItemHist(${i})">Copiar</button>
+          </div>
+          <div class="hist-preview">${item.conteudo.replace(/</g, "&lt;")}</div>
+        </div>
+      `).join("");
+    }
+
+    async function copiarItemHist(i) {
+      if (!historico[i]) return;
+      try { await navigator.clipboard.writeText(historico[i].conteudo); } catch (e) {}
+    }
+
+    function limparHistorico() {
+      historico.length = 0;
+      renderHistorico();
+    }
+
+    async function executar() {
+      const comando = entradaCmd.value.trim();
+      const base = obterApiBase();
+
+      if (!base || base.includes("COLE_AQUI")) {
+        statusEl.textContent = "Sem link";
+        saidaEl.textContent = "Cole o link https://xxxx.trycloudflare.com no topo da tela e clique em Salvar Link.";
+        return;
+      }
+
+      if (!comando) {
+        statusEl.textContent = "Vazio";
+        saidaEl.textContent = "Digite o comando e o valor.";
+        return;
+      }
+
+      btnExec.disabled = true;
+      statusEl.textContent = "Processando...";
+      saidaEl.textContent = "Aguardando retorno...";
+
+      try {
+        const res = await fetch(base + "/api/consultar", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ comando })
+        });
+        const data = await res.json();
+
+        if (data.ok) {
+          statusEl.textContent = "Concluído";
+          saidaEl.textContent = data.resposta;
+          addHistorico(comando, data.resposta);
+        } else {
+          statusEl.textContent = "Falha";
+          saidaEl.textContent = data.erro;
+        }
+      } catch (err) {
+        statusEl.textContent = "Erro de rede";
+        saidaEl.textContent = "Falha ao conectar no túnel. Veja se o cloudflared e o ponte_site.py estão abertos no Termux.";
+      } finally {
+        btnExec.disabled = false;
+      }
+    }
+
+    function gerarSenha() {
+      const chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789@#%$*";
+      let senha = "";
+      for (let i = 0; i < 16; i++) {
+        senha += chars[Math.floor(Math.random() * chars.length)];
+      }
+      const txt = "KEY-GOLD: " + senha;
+      saidaEl.textContent = txt;
+      statusEl.textContent = "Gerado";
+      addHistorico("Gerar Senha", txt);
+    }
+
+    function gerarFicha() {
+      const base = entradaCmd.value.trim() || "REGISTRO";
+      const cod = "PG-" + Math.floor(100000 + Math.random() * 900000);
+      const txt = [
+        "=== PUXADAS GOLD ===",
+        "COD: " + cod,
+        "REF: " + base,
+        "STATUS: ATIVO"
+      ].join("\n");
+      saidaEl.textContent = txt;
+      statusEl.textContent = "Criado";
+      addHistorico("Criar Ficha", txt);
+    }
+
+    async function copiarSaida() {
+      const txt = saidaEl.textContent.trim();
+      if (!txt) return;
+      try {
+        await navigator.clipboard.writeText(txt);
+        statusEl.textContent = "Copiado";
+      } catch (e) {}
+    }
+
+    function limparSaida() {
+      saidaEl.textContent = "";
+      statusEl.textContent = "Limpo";
+    }
+
+    const textoTool = document.getElementById("textoTool");
+    const saidaTool = document.getElementById("saidaTool");
+    const toolInfo = document.getElementById("toolInfo");
+
+    function soNumeros() {
+      const r = textoTool.value.replace(/\D+/g, "");
+      saidaTool.textContent = r || "(sem números)";
+      toolInfo.textContent = r.length + " dígitos";
+    }
+
+    function limparEspacos() {
+      const r = textoTool.value
+        .split(/\r?\n/)
+        .map((l) => l.trim())
+        .filter(Boolean)
+        .join("\n");
+      saidaTool.textContent = r;
+      toolInfo.textContent = "Linhas limpas";
+    }
+
+    function maiusculo() {
+      saidaTool.textContent = textoTool.value.toUpperCase();
+      toolInfo.textContent = "MAIUSCULO";
+    }
+
+    function minusculo() {
+      saidaTool.textContent = textoTool.value.toLowerCase();
+      toolInfo.textContent = "minusculo";
+    }
+
+    function contarChars() {
+      const total = textoTool.value.length;
+      const semEspaco = textoTool.value.replace(/\s+/g, "").length;
+      saidaTool.textContent = `Total: ${total} caracteres\nSem espaços: ${semEspaco} caracteres`;
+      toolInfo.textContent = "Contagem pronta";
+    }
+
+    async function copiarTool() {
+      const txt = saidaTool.textContent.trim();
+      if (!txt) return;
+      try {
+        await navigator.clipboard.writeText(txt);
+        toolInfo.textContent = "Copiado";
+      } catch (e) {}
+    }
+
+    const blocoNotas = document.getElementById("blocoNotas");
+
+    function carregarBloco() {
+      blocoNotas.value = localStorage.getItem(NOTE_KEY) || "";
+    }
+
+    function salvarBloco() {
+      localStorage.setItem(NOTE_KEY, blocoNotas.value);
+    }
+
+    async function copiarBloco() {
+      if (!blocoNotas.value) return;
+      try { await navigator.clipboard.writeText(blocoNotas.value); } catch (e) {}
+    }
+
+    function limparBloco() {
+      blocoNotas.value = "";
+      localStorage.removeItem(NOTE_KEY);
+    }
+
+    verificarSessao();
+  </script>
+</body>
+</html>
