@@ -426,7 +426,7 @@
   </div>
 
   <script>
-    const API_BASE_PADRAO = "https://COLE_AQUI_SEU_LINK_TRYCLOUDFLARE.com";
+    const API_BASE_PADRAO = "https://summer-cholesterol-fair-monster.trycloudflare.com"; //[span_1](start_span)[span_1](end_span)
     const USER_CORRETO = "gold";
     const PASS_CORRETA = "1234";
     const AUTH_KEY = "pg_auth_ok";
@@ -456,7 +456,7 @@
 
     function carregarTunnel() {
       const salvo = (localStorage.getItem(TUNNEL_KEY) || "").trim();
-      tunnelInput.value = salvo || (API_BASE_PADRAO.includes("COLE_AQUI") ? "" : API_BASE_PADRAO);
+      tunnelInput.value = salvo || API_BASE_PADRAO;
     }
 
     function salvarTunnel() {
@@ -572,7 +572,7 @@
       const comando = entradaCmd.value.trim();
       const base = obterApiBase();
 
-      if (!base || base.includes("COLE_AQUI")) {
+      if (!base) {
         statusEl.textContent = "Sem link";
         saidaEl.textContent = "Cole o link https://xxxx.trycloudflare.com no topo da tela e clique em Salvar Link.";
         return;
